@@ -6,4 +6,9 @@ Route::get('/', fn() => view('welcome'));
 
 Route::get('upload', fn() => view('upload-file'));
 
-Route::post('upload', fn(\Illuminate\Http\Request  $request) => $request->all());
+Route::post('upload', function(\Illuminate\Http\Request  $request){
+    $data = array_map('str_getcsv',file($request->file));
+    $header = $data[0];
+    unset($data[0]);
+    return $data;
+})->name('upload.post');
