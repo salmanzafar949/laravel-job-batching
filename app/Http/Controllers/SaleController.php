@@ -10,11 +10,11 @@ class SaleController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return view('upload-file');
     }
 
     /**
@@ -35,7 +35,11 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = array_map('str_getcsv',file($request->file));
+        $header = $data[0];
+        return $header;
+        unset($data[0]);
+        return $data;
     }
 
     /**

@@ -1,15 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\SaleController;
 
 Route::get('/', fn() => view('welcome'));
 
-Route::get('upload', fn() => view('upload-file'));
+Route::get('upload', [SaleController::class, 'index']);
 
-Route::post('upload', function(\Illuminate\Http\Request  $request){
-    $data = array_map('str_getcsv',file($request->file));
-    $header = $data[0];
-    return $header;
-    unset($data[0]);
-    return $data;
-})->name('upload.post');
+Route::post('upload', [SaleController::class, 'store'])->name('upload.post');
