@@ -37,9 +37,14 @@ class SaleController extends Controller
     {
         $data = array_map('str_getcsv',file($request->file));
         $header = $data[0];
-        return $header;
         unset($data[0]);
-        return $data;
+        foreach ($data as $item)
+        {
+            $dataToStore = array_combine($header, $item);
+            Sale::create($dataToStore);
+        }
+
+        return "success";
     }
 
     /**
