@@ -40,6 +40,7 @@ class SaleController extends Controller
         unset($data[0]);
         foreach ($data as $item)
         {
+            // Combine array into key value pairs
             $dataToStore = array_combine($header, $item);
             Sale::create($dataToStore);
         }
