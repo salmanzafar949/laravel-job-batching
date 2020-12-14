@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Sale;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,7 +14,7 @@ use Illuminate\Queue\SerializesModels;
 
 class SalesCsvProcess implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
@@ -37,5 +38,10 @@ class SalesCsvProcess implements ShouldQueue
             $saleData = array_combine($this->header, $sale);
             Sale::create($saleData);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+
     }
 }

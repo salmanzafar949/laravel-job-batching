@@ -59,9 +59,7 @@ class SaleController extends Controller
                 unset($data[0]);
             }
 
-            SalesCsvProcess::dispatch($data, $header);
-
-//            $batch->add(new SalesCsvProcess($data, $header));
+            $batch->add(new SalesCsvProcess($data, $header));
         }
 
     }
@@ -109,5 +107,21 @@ class SaleController extends Controller
     public function destroy(Sale $sale)
     {
         //
+    }
+
+    public function batch()
+    {
+        $batchId = request('id');
+        return Bus::findBatch($batchId);
+    }
+
+    public function batchInProgress()
+    {
+        $batches = DB::table('job_batches')->where('pending_jobs', '>', 0)->get();
+        if (count($batches) > 0) {
+            return Bus::findBatch($batches[0]->id);
+        }
+
+        return [];
     }
 }
