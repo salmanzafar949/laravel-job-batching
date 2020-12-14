@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SalesCsvProcess;
 use App\Models\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 
 class SaleController extends Controller
 {
@@ -35,17 +37,33 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        $data = array_map('str_getcsv',file($request->file));
-        $header = $data[0];
-        unset($data[0]);
-        foreach ($data as $item)
-        {
-            // Combine array into key value pairs
-            $dataToStore = array_combine($header, $item);
-            Sale::create($dataToStore);
+        $this->validate($request, [
+            'file' => ['file']
+        ]);
+
+        $data   =   file($request->file);
+
+        // Chunking file
+        $chunks = array_chunk($data, 1000);
+
+        $header = [];
+        $batch  = Bus::batch([])->dispatch();
+
+        foreach ($chunks as $key => $chunk) {
+
+            $data = array_map('str_getcsv', $chunk);
+
+            if ($key === 0)
+            {
+                $header = $data[0];
+                unset($data[0]);
+            }
+
+            SalesCsvProcess::dispatch($data, $header);
+
+//            $batch->add(new SalesCsvProcess($data, $header));
         }
 
-        return "success";
     }
 
     /**

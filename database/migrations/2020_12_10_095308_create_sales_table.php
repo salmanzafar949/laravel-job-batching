@@ -21,7 +21,7 @@ class CreateSalesTable extends Migration
             $table->string('Sales Channel');
             $table->string('Order Priority');
             $table->string('Order Date');
-            $table->string('Order ID"');
+            $table->string('Order ID');
             $table->string('Ship Date');
             $table->string('Units Sold');
             $table->string('Unit Price');
