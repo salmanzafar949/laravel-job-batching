@@ -19,15 +19,6 @@ class SaleController extends Controller
         return view('upload-file');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -62,6 +53,7 @@ class SaleController extends Controller
             $batch->add(new SalesCsvProcess($data, $header));
         }
 
+        return $batch;
     }
 
     /**
@@ -75,16 +67,6 @@ class SaleController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Sale  $sale
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Sale $sale)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
