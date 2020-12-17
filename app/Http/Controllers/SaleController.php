@@ -6,6 +6,7 @@ use App\Jobs\SalesCsvProcess;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
